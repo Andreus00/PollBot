@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.security.auth.login.LoginException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -61,7 +62,15 @@ public class PollBotAPP {
      * @throws LoginException
      */
     public void run() throws LoginException {
-        JDABuilder builder = JDABuilder.createDefault("");  // TODO: token
+        String token = "";
+        File file=new File("token/token");
+        try(BufferedReader br = new BufferedReader(new FileReader(file))) {
+            token = br.readLine();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+        JDABuilder builder = JDABuilder.createDefault(token);  // TODO: token
         builder.setActivity(Activity.watching("Poll Poll Poll"));
         builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
         builder.addEventListeners(new PollListener());
