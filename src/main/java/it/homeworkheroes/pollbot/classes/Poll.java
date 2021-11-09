@@ -74,9 +74,10 @@ public class Poll {
     }
 
     private String buildBar(int votes) {
+        final int LINE_NUMBERS = 10;
         StringBuilder stringBuilder = new StringBuilder();
-        long full = votes_sum > 0 ? 10 * votes / votes_sum : 0;
-        for (int i = 0; i < 10; i++) {
+        long full = votes_sum > 0 ? LINE_NUMBERS * votes / votes_sum : 0;
+        for (int i = 0; i < LINE_NUMBERS; i++) {
             stringBuilder.append(i < full ? PROGRESS_BAR_FULL : PROGRESS_BAR_EMPTY);
         }
         return stringBuilder.toString();
