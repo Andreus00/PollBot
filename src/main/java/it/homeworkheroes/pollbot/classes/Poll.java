@@ -10,9 +10,9 @@ import java.util.ArrayList;
 
 
 public class Poll {
-    private long pollId;
     private String text;
     private String messageId;
+    private long pollId;
     private ArrayList<Option> optionList;
     private String channelId;
 
@@ -27,10 +27,6 @@ public class Poll {
         this.optionList = new ArrayList<>();
         this.channelId = channelId;
         this.pollId = PollBotAPP.getNewId();
-    }
-
-    public long getId() {
-        return pollId;
     }
 
     public String getText() {
@@ -83,7 +79,7 @@ public class Poll {
             embedBuilder.addField("Votes: " + Integer.toString(o.getVotes()), "", true);
         }
 
-        embedBuilder.setFooter("poll id " + this.getId());
+        embedBuilder.setFooter("poll id " + pollId);
         embedBuilder.setColor(Color.ORANGE);
 
         return embedBuilder.build();

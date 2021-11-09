@@ -20,15 +20,18 @@ public class PollBotAPP {
 
     private static JDA jda;
 
+
     private static HashMap<Long, Poll> pollList;
+    private static HashMap<String, Long> messageIdPollId;
 
     private static long poll_number;
-
+    //Strng;
     /**
      * Private constructor needed to make use of the singleton pattern.
      */
     private PollBotAPP() {
-        this.pollList = new HashMap<>();
+        pollList = new HashMap<>();
+        messageIdPollId = new HashMap<>();
     }
 
     public static synchronized long getNewId() {
