@@ -4,7 +4,6 @@ import it.homeworkheroes.pollbot.commands.Command;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
-import java.util.StringTokenizer;
 
 public class CommandsHandler implements PollHandler {
 
@@ -20,11 +19,11 @@ public class CommandsHandler implements PollHandler {
         String commandName = Character.toUpperCase(content.charAt(0)) + content.substring(1, content.indexOf(' ')).toLowerCase(Locale.ROOT);
         System.out.println(commandName);
         try {
-            ((Command) Class.forName("it.homeworkheroes.pomobot.commands." + commandName).getConstructor(String.class).newInstance(channelId, messageId, content.substring(commandName.length()))).run();
+            ((Command) Class.forName("it.homeworkheroes.pollbot.commands." + commandName).getConstructor(String.class).newInstance(channelId, messageId, content.substring(commandName.length()))).run();
         } catch (ClassNotFoundException e) {
             System.err.println("Command for " + content + " not found. Calculated command name = " + commandName);
         } catch (NoSuchMethodException e) {
-            System.err.println("Constructor for " + content + "not found. Calculated command name = " + commandName + ". Remember not to make the constructor private");
+            System.err.println("Constructor for " + content + "not found. Calculated command name = " + commandName + ". Remember to make the constructor public");
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
