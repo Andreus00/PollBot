@@ -92,6 +92,7 @@ public class Poll {
 
         textChannel.sendMessage(m).queue(e -> {
             messageId = e.getId();
+            PollBotAPP.getMessageIdPollId().put(getMessageId(), getId()); //TODO migliorarlo, BISOGNA METTERE QUA LA ENTRY PER FORZA
             System.out.println("Questo è il message id: " + this.messageId);
         });
 
@@ -103,7 +104,20 @@ public class Poll {
         textChannel.editMessageById(messageId, buildMessage()).queue();
     }
 
-    public boolean vote(String preference){
+    synchronized public boolean vote(String preference){
+        try // prova a vedere se la stringa in input è valida per il voto
+        {
+            int value = EMONUMBER.valueOf(preference).getValue();
+            if(value < optionList.size()) { // se il valore è nel range della lista allora aggiorna il valore
+                Option option = optionList.get(value);
+                option.increment();
+                update();
+            }
+        }
+        catch (IllegalArgumentException e) //se lancia eccezione allora è stata passata una stringa obsoleta
+        {
+            e.printStackTrace();
+        }
         return false; //oki vai
     }
 
