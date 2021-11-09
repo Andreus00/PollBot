@@ -4,22 +4,22 @@ import it.homeworkheroes.pollbot.commands.Command;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
+import java.util.StringTokenizer;
 
 public class CommandsHandler implements PollHandler {
 
     /**
      * Gets the content of the command message and the room controller in order to perform the command.
      * It's important to have the same name in the command and in the class!!!
-     * @param content content of the message es. "pd!start" or "pd!clear"
-     * @param roomController Room controller associated to the TextChannel where the command was send
      */
     @Override
-    public void handle(String content) {
-        if (content.length() < 5)
+    public void handle(String channelId, String messageId, String content) {
+        if (content.length() < 1)
             return;
-        String commandName = Character.toUpperCase(content.charAt(3)) + content.substring(4).toLowerCase(Locale.ROOT) + "Command";
+
+        String commandName = Character.toUpperCase(content.charAt(0)) + content.substring(1, content.indexOf(' ')).toLowerCase(Locale.ROOT);
         try {
-            ((Command) Class.forName("it.homeworkheroes.pomobot.commands." + commandName).getConstructor().newInstance()).run();
+            ((Command) Class.forName("it.homeworkheroes.pomobot.commands." + commandName).getConstructor(String.class).newInstance(channelId, messageId, content.substring(commandName.length()))).run();
         } catch (ClassNotFoundException e) {
             System.err.println("Command for " + content + " not found. Calculated command name = " + commandName);
         } catch (NoSuchMethodException e) {
@@ -29,6 +29,8 @@ public class CommandsHandler implements PollHandler {
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
     }

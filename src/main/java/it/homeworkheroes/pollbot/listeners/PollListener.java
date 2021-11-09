@@ -29,10 +29,10 @@ public class PollListener extends ListenerAdapter {
         String channelId = event.getChannel().getId();
 
         if(content.startsWith(KEYWORD)) {
-            String mId = event.getMessageId();
-            String pollText = content.substring(KEYWORD.length());
-                    Poll poll = new Poll(mId, pollText, channelId);
-            pba.addPoll(poll);
+            String messageId = event.getMessageId();
+            String pollText = content.substring(KEYWORD.length() + 1);
+            System.out.println(pollText);
+            commandsHandler.handle(channelId, messageId, pollText);
         }
     }
 }

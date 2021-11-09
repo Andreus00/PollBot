@@ -1,10 +1,11 @@
 package it.homeworkheroes.pollbot.classes;
 
 import it.homeworkheroes.pollbot.apps.PollBotAPP;
-import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 
@@ -14,6 +15,11 @@ public class Poll {
     private String messageId;
     private ArrayList<Option> optionList;
     private String channelId;
+
+    private final static Character PROGRESS_BAR_FULL = '▰';
+    private final static Character PROGRESS_BAR_EMPTY = '▱';
+    private final static String BLUE_CIRCLE = ":blue_circle:";
+    private final static String ORANGE_DIAMOND = ":large_orange_diamond:";
 
 
     public Poll(String messageId, String text, String channelId){
@@ -60,26 +66,52 @@ public class Poll {
         this.optionList.remove(o);
     }
 
-    public void send(TextChannel tc) {
-        MessageBuilder mb = new MessageBuilder();
+    private MessageEmbed buildMessage() {
+        EmbedBuilder embedBuilder = new EmbedBuilder();
         // TODO: mockup del messaggio
-        mb.append(text);
-        for(Option o : optionList){
-            mb.append(o);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i= 0; i < 4; i++) stringBuilder.append(ORANGE_DIAMOND + " " + BLUE_CIRCLE + " ");
+        // add the text of the poll
+        embedBuilder.addField(stringBuilder.toString(), "**" + text + "**", true).addBlankField(false);
+
+        for(int i = 0; i < Math.min(optionList.size(), 9); i++){
+            Option o = optionList.get(i);
+            embedBuilder.addField(EMONUMBER.values()[i].toString(), o.toString(), false);
+            embedBuilder.addField("Votes: " + Integer.toString(o.getVotes()), "", true);
         }
 
-        tc.sendMessage(mb.build());
+        embedBuilder.setFooter("poll id " + this.getId());
+        embedBuilder.setColor(Color.ORANGE);
+
+        return embedBuilder.build();
+    }
+
+    public void send() {
+        TextChannel textChannel = PollBotAPP.getJDA().getTextChannelById(this.channelId);
+
+        MessageEmbed m = buildMessage();
+
+        textChannel.sendMessage(m).queue();
+    }
+
+    public void update() {
+        TextChannel textChannel = PollBotAPP.getJDA().getTextChannelById(this.channelId);
+
+        textChannel.editMessageById(messageId, buildMessage()).queue();
     }
 
     static public class Option {
-
+        private static int ID_COUNT = 0;
         private int id, votes;
         private String optionText;
 
-        public Option(int id, String optionText) {
-            this.id = id;
+        public Option(String optionText) {
+            this.id = getNewId();
             this.optionText = optionText;
         }
+
+        synchronized int getNewId() { return ID_COUNT++;}
 
         public int getId() {
             return id;
