@@ -1,6 +1,7 @@
 package it.homeworkheroes.pollbot.classes;
 
 import it.homeworkheroes.pollbot.apps.PollBotAPP;
+import it.homeworkheroes.pollbot.listeners.PollAudioLoadResultHandler;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -15,6 +16,7 @@ public class Poll {
     private long pollId;
     private ArrayList<Option> optionList;
     private boolean closed;
+    private long votes_sum;
 
     private final static Character PROGRESS_BAR_FULL = '▰';
     private final static Character PROGRESS_BAR_EMPTY = '▱';
@@ -27,7 +29,6 @@ public class Poll {
         this.optionList = new ArrayList<>();
         this.channelId = channelId;
         this.pollId = PollBotAPP.getNewId();
-        this.closed = false;
     }
 
     public String getText() {
@@ -54,20 +55,28 @@ public class Poll {
         return pollId;
     }
 
-    public boolean isClosed(){
-        return closed;
-    }
-
     public void setOptionList(ArrayList<Option> optionList) {
         this.optionList = optionList;
     }
 
-    synchronized public void addOption(Option o) {
+    synchronized public boolean addOption(Option o) {
+        if(optionList.size() >= PollBotAPP.MAX_ENTRY)
+            return false;
         this.optionList.add(o);
+        return true;
     }
 
     synchronized public void removeOption(Option o) {
         this.optionList.remove(o);
+    }
+
+    private String buildBar(int votes) {
+        StringBuilder stringBuilder = new StringBuilder();
+        long full = votes_sum > 0 ? 10 * votes / votes_sum : 0;
+        for (int i = 0; i < 10; i++) {
+            stringBuilder.append(i < full ? PROGRESS_BAR_FULL : PROGRESS_BAR_EMPTY);
+        }
+        return stringBuilder.toString();
     }
 
     private MessageEmbed buildMessage() {
@@ -78,10 +87,12 @@ public class Poll {
         // add the text of the poll
         embedBuilder.addField(stringBuilder.toString(), "**" + text + "**", true).addBlankField(false);
 
-        for(int i = 0; i < Math.min(optionList.size(), 10); i++){
+        for(int i = 0; i < Math.min(optionList.size(), PollBotAPP.MAX_ENTRY); i++){
             Option o = optionList.get(i);
             embedBuilder.addField(EMONUMBER.values()[i].toString(), o.toString(), false);
             embedBuilder.addField("Votes: " + Integer.toString(o.getVotes()), "", true);
+            embedBuilder.addField("", buildBar(o.getVotes()), true);
+
         }
 
         embedBuilder.setFooter("poll id " + pollId);
@@ -109,6 +120,18 @@ public class Poll {
         textChannel.editMessageById(messageId, buildMessage()).queue();
     }
 
+
+    public void close(String winner) {
+        TextChannel textChannel = PollBotAPP.getJDA().getTextChannelById(this.channelId);
+        MessageEmbed message = buildMessage();
+        EmbedBuilder eb = new EmbedBuilder(message);
+        eb.addBlankField(false).addField("VOTATION CLOSED", winner, false);
+        textChannel.editMessageById(messageId, eb.build()).queue();
+
+        PollBotAPP.removePoll(this);
+    }
+
+
     synchronized public boolean addVote(String preference){
         try // prova a vedere se la stringa in input è valida per il voto
         {
@@ -116,6 +139,7 @@ public class Poll {
             if(value < getOptionList().size() && value >= 0) { // se il valore è nel range della lista allora aggiorna il valore
                 Option option = getOptionList().get(value);
                 option.increment();
+                this.votes_sum++;
                 update();
                 return true;
             }
@@ -133,20 +157,13 @@ public class Poll {
             if(value < getOptionList().size() && value >= 0) { // se il valore è nel range della lista allora aggiorna il valore
                 Option option = getOptionList().get(value);
                 option.decrement();
+                this.votes_sum--;
                 update();
             }
         }
         catch (IllegalArgumentException e){
             e.printStackTrace();
         }
-    }
-
-    public void closeVotation(){
-        closed = true;
-    }
-
-    public void openVotation(){
-        closed = false;
     }
 
     @Override
@@ -161,9 +178,6 @@ public class Poll {
     public int hashCode() {
         return (int) (pollId ^ (pollId >>> 32));
     }
-
-
-
 
     static public class Option implements Comparable{
 
@@ -207,7 +221,8 @@ public class Poll {
         }
 
         public void decrement() {
-            this.votes--;
+            if(votes > 0)
+                this.votes--;
         }
 
         @Override
@@ -236,7 +251,7 @@ public class Poll {
         public int compareTo(@NotNull Object o) {
             if(o instanceof Option){
                 Option op = (Option) o;
-                return Integer.compare(op.getVotes(), getVotes());
+                return Integer.compare(getVotes(), op.getVotes());
             }
             return 0;
         }

@@ -2,6 +2,7 @@ package it.homeworkheroes.pollbot.commands;
 
 import it.homeworkheroes.pollbot.apps.PollBotAPP;
 import it.homeworkheroes.pollbot.classes.Poll;
+import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.util.StringTokenizer;
 
@@ -21,7 +22,11 @@ public class Add extends PollCommand {
         }
         Poll p = PollBotAPP.getPollList().get(Long.valueOf(pollId));
 
-        p.addOption(new Poll.Option(content));
+        if(p == null) return;
+
+        if(!p.addOption(new Poll.Option(content))) {
+            PollBotAPP.getJDA().getTextChannelById(channelId).sendMessage(new EmbedBuilder().addField("Warning", "Numero massimo di entry raggiunto", true).build()).queue();
+        }
         p.update();
     }
 

@@ -15,10 +15,9 @@ public class CommandsHandler implements PollHandler {
     public void handle(String channelId, String content) {
         if (content.length() < 1)
             return;
-
-        String commandName = Character.toUpperCase(content.charAt(0)) + content.substring(1, content.indexOf(' ')).toLowerCase(Locale.ROOT);
-
+        String commandName = "";
         try {
+            commandName = Character.toUpperCase(content.charAt(0)) + content.substring(1, content.indexOf(' ')).toLowerCase(Locale.ROOT);
             ((Command) Class.forName("it.homeworkheroes.pollbot.commands." + commandName).getConstructor(String.class, String.class).newInstance(channelId, content.substring(commandName.length()))).run();
         } catch (ClassNotFoundException e) {
             System.err.println("Command for " + content + " not found. Calculated command name = " + commandName);
@@ -31,7 +30,7 @@ public class CommandsHandler implements PollHandler {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
+            System.out.println("Someone tryed to create a poll without a text argument.");
         }
     }
 }

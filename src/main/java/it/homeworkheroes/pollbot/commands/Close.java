@@ -1,6 +1,7 @@
 package it.homeworkheroes.pollbot.commands;
 
 import it.homeworkheroes.pollbot.apps.PollBotAPP;
+import it.homeworkheroes.pollbot.classes.EMONUMBER;
 import it.homeworkheroes.pollbot.classes.Poll;
 
 import java.util.StringTokenizer;
@@ -21,11 +22,9 @@ public class Close extends PollCommand{
         }
         Poll p = PollBotAPP.getPollList().getOrDefault(Long.valueOf(pollId), null);
         if(p != null){
-            p.closeVotation();
-            p.addOption(new Poll.Option("VOTATION CLOSED"));
-            p.addOption(new Poll.Option("WON: " + p.getOptionList().stream().max(Poll.Option::compareTo).get().getVotes()));
-
-            p.update();
+            Poll.Option o = p.getOptionList().stream().max(Poll.Option::compareTo).orElse(null);
+            if (o == null) return;
+            p.close(EMONUMBER.values()[p.getOptionList().indexOf(o)].getEmoji());
         }
     }
 

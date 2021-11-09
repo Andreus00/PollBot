@@ -20,6 +20,7 @@ public class PollBotAPP {
 
     private static JDA jda;
 
+    public final static int MAX_ENTRY = 8;
 
     private static HashMap<Long, Poll> pollList;
 

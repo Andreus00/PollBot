@@ -42,7 +42,7 @@ public class PollListener extends ListenerAdapter {
 
         if(content.startsWith(KEYWORD)) {
             String messageId = event.getMessageId();
-            event.getChannel().deleteMessageById(messageId);
+            event.getChannel().deleteMessageById(messageId).queue();
             String pollText = content.substring(KEYWORD.length() + 1);
 
             commandsHandler.handle(channelId, pollText);
@@ -56,8 +56,7 @@ public class PollListener extends ListenerAdapter {
             String msg = String.format(Locale.ROOT, "<@%s> you must use a valid reaction", event.getUserId());
             event.getChannel().sendMessage(msg).queue();
             // TODO remove emoji
-//           event.getChannel().removeReactionById().queue();
-            event.getTextChannel().removeReactionById(event.getMessageId(), event.getReactionEmote().getEmoji()).queue();
+            event.getChannel().removeReactionById(event.getMessageId(), event.getReactionEmote().isEmote() ? event.getReactionEmote().getEmote().toString() : event.getReactionEmote().getEmoji()).queue();
         }
     }
 
