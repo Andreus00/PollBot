@@ -68,14 +68,13 @@ public class Poll {
 
     private MessageEmbed buildMessage() {
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        // TODO: mockup del messaggio
 
         StringBuilder stringBuilder = new StringBuilder();
         for(int i= 0; i < 4; i++) stringBuilder.append(ORANGE_DIAMOND + " " + BLUE_CIRCLE + " ");
         // add the text of the poll
         embedBuilder.addField(stringBuilder.toString(), "**" + text + "**", true).addBlankField(false);
 
-        for(int i = 0; i < Math.min(optionList.size(), 9); i++){
+        for(int i = 0; i < Math.min(optionList.size(), 10); i++){
             Option o = optionList.get(i);
             embedBuilder.addField(EMONUMBER.values()[i].toString(), o.toString(), false);
             embedBuilder.addField("Votes: " + Integer.toString(o.getVotes()), "", true);
