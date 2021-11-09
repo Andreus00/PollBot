@@ -23,7 +23,7 @@ public class CommandsHandler implements PollHandler {
         } catch (ClassNotFoundException e) {
             System.err.println("Command for " + content + " not found. Calculated command name = " + commandName);
         } catch (NoSuchMethodException e) {
-            System.err.println("Constructor for " + content + "not found. Calculated command name = " + commandName + ". Remember to make the constructor public");
+            System.err.println("Constructor for " + content + " not found. Calculated command name = " + commandName + ". Remember to make the constructor public");
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {

@@ -4,17 +4,17 @@ import it.homeworkheroes.pollbot.apps.PollBotAPP;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 
 public class Poll {
-    private String text;
-    private String messageId;
+    private String text, channelId, messageId;
     private long pollId;
     private ArrayList<Option> optionList;
-    private String channelId;
+    private boolean closed;
 
     private final static Character PROGRESS_BAR_FULL = '▰';
     private final static Character PROGRESS_BAR_EMPTY = '▱';
@@ -27,6 +27,7 @@ public class Poll {
         this.optionList = new ArrayList<>();
         this.channelId = channelId;
         this.pollId = PollBotAPP.getNewId();
+        this.closed = false;
     }
 
     public String getText() {
@@ -51,6 +52,10 @@ public class Poll {
 
     public long getId() {
         return pollId;
+    }
+
+    public boolean isClosed(){
+        return closed;
     }
 
     public void setOptionList(ArrayList<Option> optionList) {
@@ -92,7 +97,7 @@ public class Poll {
 
         textChannel.sendMessage(m).queue(e -> {
             messageId = e.getId();
-            PollBotAPP.getMessageIdPollId().put(getMessageId(), getId()); //TODO migliorarlo, BISOGNA METTERE QUA LA ENTRY PER FORZA
+            PollBotAPP.addMessageIdPollId(getMessageId(), getId());
             System.out.println("Questo è il message id: " + this.messageId);
         });
 
@@ -104,24 +109,64 @@ public class Poll {
         textChannel.editMessageById(messageId, buildMessage()).queue();
     }
 
-    synchronized public boolean vote(String preference){
+    synchronized public boolean addVote(String preference){
         try // prova a vedere se la stringa in input è valida per il voto
         {
-            int value = EMONUMBER.valueOf(preference).getValue();
-            if(value < optionList.size()) { // se il valore è nel range della lista allora aggiorna il valore
-                Option option = optionList.get(value);
+            int value = EMONUMBER.getValue(preference);
+            if(value < getOptionList().size() && value >= 0) { // se il valore è nel range della lista allora aggiorna il valore
+                Option option = getOptionList().get(value);
                 option.increment();
                 update();
+                return true;
             }
         }
-        catch (IllegalArgumentException e) //se lancia eccezione allora è stata passata una stringa obsoleta
-        {
+        catch (IllegalArgumentException e) { //se lancia eccezione allora è stata passata una stringa obsoleta
             e.printStackTrace();
         }
         return false; //oki vai
     }
 
-    static public class Option {
+    synchronized public void removeVote(String preference){
+        try
+        {
+            int value = EMONUMBER.getValue(preference);
+            if(value < getOptionList().size() && value >= 0) { // se il valore è nel range della lista allora aggiorna il valore
+                Option option = getOptionList().get(value);
+                option.decrement();
+                update();
+            }
+        }
+        catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void closeVotation(){
+        closed = true;
+    }
+
+    public void openVotation(){
+        closed = false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Poll poll = (Poll) o;
+        return pollId == poll.pollId;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (pollId ^ (pollId >>> 32));
+    }
+
+
+
+
+    static public class Option implements Comparable{
+
         private static int ID_COUNT = 0;
         private int id, votes;
         private String optionText;
@@ -180,9 +225,20 @@ public class Poll {
             return id;
         }
 
+
+
         @Override
         public String toString() {
             return getOptionText();
+        }
+
+        @Override
+        public int compareTo(@NotNull Object o) {
+            if(o instanceof Option){
+                Option op = (Option) o;
+                return Integer.compare(op.getVotes(), getVotes());
+            }
+            return 0;
         }
     }
 }

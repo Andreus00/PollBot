@@ -42,6 +42,9 @@ public class PollBotAPP {
     public static synchronized void addPoll(Poll p) {
         pollList.put(p.getId(), p);
     }
+    public static synchronized void addMessageIdPollId(String messageId, long id) {
+        getMessageIdPollId().put(messageId, id);
+    }
     public static synchronized void removePoll(long id) {
         messageIdPollId.remove(pollList.get(id).getMessageId());
         pollList.remove(id);

@@ -8,12 +8,17 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.emote.EmoteAddedEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEmoteEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.internal.requests.Route;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Locale;
 
 public class PollListener extends ListenerAdapter {
 
@@ -46,18 +51,19 @@ public class PollListener extends ListenerAdapter {
 
     @Override
     public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
-        super.onMessageReactionAdd(event);
-//        System.out.println(event.getReaction().getMessageId());
-        System.out.println(event.getMessageId());
-
-        Poll poll = PollBotAPP.getPollFromMessageId(event.getMessageId());
-        System.out.println(event.getReactionEmote().getName().equals(EMONUMBER.NINE.getEmoji()));
-        System.out.println(event.getReactionEmote().getName().toCharArray().toString());
-        System.out.println(event.getReactionEmote().getName().getBytes(StandardCharsets.UTF_8));
-
-
-
-        //poll.vote(event.getReaction().getReactionEmote().getName());
-
+        if(!PollBotAPP.getPollFromMessageId(event.getMessageId())
+                     .addVote(event.getReactionEmote().getName())){
+            String msg = String.format(Locale.ROOT, "<@%s> you must use a valid reaction", event.getUserId());
+            event.getChannel().sendMessage(msg).queue();
+            // TODO remove emoji
+//           event.getChannel().removeReactionById().queue();
+            event.getTextChannel().removeReactionById(event.getMessageId(), event.getReactionEmote().getEmoji()).queue();
+        }
     }
+
+    @Override
+    public void onMessageReactionRemove(@NotNull MessageReactionRemoveEvent event) {
+        PollBotAPP.getPollFromMessageId(event.getMessageId()).removeVote(event.getReactionEmote().getName());
+    }
+
 }
