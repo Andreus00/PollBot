@@ -21,7 +21,7 @@ public class Add extends PollCommand {
 
         if(p == null || !p.getChannelId().equals(channelId)) return;
 
-        if(!p.addOption(new Poll.Option(content.substring(2)))) {
+        if(!p.addOption(new Poll.Option(content.substring(pollId.length() + 1)))) {
             PollBotAPP.getJDA().getTextChannelById(channelId).sendMessage(new EmbedBuilder().addField("Warning", "Numero massimo di entry raggiunto", true).build()).queue();
         }
         p.update();
