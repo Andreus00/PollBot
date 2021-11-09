@@ -15,11 +15,7 @@ public class Close extends PollCommand{
     @Override
     public void run() {
         StringTokenizer tokenizer = new StringTokenizer(content);
-        int i = 0;
-        String pollId = "";
-        while (tokenizer.hasMoreTokens() && i++ < 1) {
-            pollId = tokenizer.nextToken();
-        }
+        String pollId = tokenizer.nextToken();
         Poll p = PollBotAPP.getPollList().getOrDefault(Long.valueOf(pollId), null);
         if(p != null){
             Poll.Option o = p.getOptionList().stream().max(Poll.Option::compareTo).orElse(null);

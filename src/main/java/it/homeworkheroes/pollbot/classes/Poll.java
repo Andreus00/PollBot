@@ -1,7 +1,6 @@
 package it.homeworkheroes.pollbot.classes;
 
 import it.homeworkheroes.pollbot.apps.PollBotAPP;
-import it.homeworkheroes.pollbot.listeners.PollAudioLoadResultHandler;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -33,6 +32,10 @@ public class Poll {
 
     public String getText() {
         return text;
+    }
+
+    public String getChannelId(){
+        return channelId;
     }
 
     public String getMessageId() {
@@ -109,7 +112,6 @@ public class Poll {
         textChannel.sendMessage(m).queue(e -> {
             messageId = e.getId();
             PollBotAPP.addMessageIdPollId(getMessageId(), getId());
-            System.out.println("Questo è il message id: " + this.messageId);
         });
 
     }
@@ -137,8 +139,7 @@ public class Poll {
         {
             int value = EMONUMBER.getValue(preference);
             if(value < getOptionList().size() && value >= 0) { // se il valore è nel range della lista allora aggiorna il valore
-                Option option = getOptionList().get(value);
-                option.increment();
+                getOptionList().get(value).increment();
                 this.votes_sum++;
                 update();
                 return true;

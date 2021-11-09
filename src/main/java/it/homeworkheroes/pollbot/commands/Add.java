@@ -14,17 +14,14 @@ public class Add extends PollCommand {
 
     @Override
     public void run() {
+
         StringTokenizer tokenizer = new StringTokenizer(content);
-        int i = 0;
-        String pollId = "";
-        while (tokenizer.hasMoreTokens() && i++ < 1) {
-            pollId = tokenizer.nextToken();
-        }
+        String pollId = tokenizer.nextToken();
         Poll p = PollBotAPP.getPollList().get(Long.valueOf(pollId));
 
-        if(p == null) return;
+        if(p == null || !p.getChannelId().equals(channelId)) return;
 
-        if(!p.addOption(new Poll.Option(content))) {
+        if(!p.addOption(new Poll.Option(content.substring(2)))) {
             PollBotAPP.getJDA().getTextChannelById(channelId).sendMessage(new EmbedBuilder().addField("Warning", "Numero massimo di entry raggiunto", true).build()).queue();
         }
         p.update();

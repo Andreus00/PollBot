@@ -1,6 +1,5 @@
 package it.homeworkheroes.pollbot.classes;
 
-import java.util.Arrays;
 import java.util.Locale;
 
 public enum EMONUMBER {
