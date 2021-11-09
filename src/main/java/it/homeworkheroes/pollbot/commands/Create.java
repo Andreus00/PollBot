@@ -5,13 +5,13 @@ import it.homeworkheroes.pollbot.classes.Poll;
 
 public class Create extends PollCommand {
 
-    public Create(String channelId, String messageId, String content) {
-        super(channelId, messageId, content);
+    public Create(String channelId, String content) {
+        super(channelId, content);
     }
 
     @Override
     public void run() {
-        Poll p = new Poll(super.messageId, content, channelId);
+        Poll p = new Poll(content, channelId);
 
         PollBotAPP.addPoll(p);
 

@@ -12,14 +12,14 @@ public class CommandsHandler implements PollHandler {
      * It's important to have the same name in the command and in the class!!!
      */
     @Override
-    public void handle(String channelId, String messageId, String content) {
+    public void handle(String channelId, String content) {
         if (content.length() < 1)
             return;
 
         String commandName = Character.toUpperCase(content.charAt(0)) + content.substring(1, content.indexOf(' ')).toLowerCase(Locale.ROOT);
-        System.out.println(commandName);
+
         try {
-            ((Command) Class.forName("it.homeworkheroes.pollbot.commands." + commandName).getConstructor(String.class, String.class, String.class).newInstance(channelId, messageId, content.substring(commandName.length()))).run();
+            ((Command) Class.forName("it.homeworkheroes.pollbot.commands." + commandName).getConstructor(String.class, String.class).newInstance(channelId, content.substring(commandName.length()))).run();
         } catch (ClassNotFoundException e) {
             System.err.println("Command for " + content + " not found. Calculated command name = " + commandName);
         } catch (NoSuchMethodException e) {

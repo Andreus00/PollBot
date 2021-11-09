@@ -37,13 +37,18 @@ public class PollBotAPP {
 
     public static synchronized void addPoll(Poll p) {
         pollList.put(p.getId(), p);
+        messageIdPollId.put(p.getMessageId(), p.getId());
     }
     public static synchronized void removePoll(long id) {
+        messageIdPollId.remove(pollList.get(id).getMessageId());
         pollList.remove(id);
     }
     public static synchronized void removePoll(Poll p) {
         removePoll(p.getId());
     }
+
+    public static HashMap<Long, Poll> getPollList() {
+        return pollList; }
 
     /**
      * Method which initializes a TBA instance by following the singleton pattern.
@@ -78,6 +83,11 @@ public class PollBotAPP {
 
     public static JDA getJDA() {
         return PollBotAPP.jda;
+    }
+
+    public static Poll getPollFromMessageId(String messageId) {
+        //return pollList.entrySet().parallelStream().filter(x -> x.getValue().getMessageId().equals(messageId)).findFirst().orElse(null).getValue();
+        return pollList.get(messageIdPollId.getOrDefault(messageId, -1l));
     }
 
     public static void setJDA(JDA jda) {

@@ -22,12 +22,11 @@ public class Poll {
     private final static String ORANGE_DIAMOND = ":large_orange_diamond:";
 
 
-    public Poll(String messageId, String text, String channelId){
-        this.pollId = PollBotAPP.getNewId();
-        this.messageId = messageId;
+    public Poll(String text, String channelId){
         this.text = text;
         this.optionList = new ArrayList<>();
         this.channelId = channelId;
+        this.pollId = PollBotAPP.getNewId();
     }
 
     public long getId() {
@@ -52,6 +51,10 @@ public class Poll {
 
     public void setMessageId(String messageId) {
         this.messageId = messageId;
+    }
+
+    public long getId() {
+        return pollId;
     }
 
     public void setOptionList(ArrayList<Option> optionList) {
@@ -91,7 +94,11 @@ public class Poll {
 
         MessageEmbed m = buildMessage();
 
-        textChannel.sendMessage(m).queue();
+        textChannel.sendMessage(m).queue(e -> {
+            messageId = e.getId();
+            System.out.println("Questo è il message id: " + this.messageId);
+        });
+
     }
 
     public void update() {
