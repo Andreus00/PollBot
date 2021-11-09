@@ -103,6 +103,10 @@ public class Poll {
         textChannel.editMessageById(messageId, buildMessage()).queue();
     }
 
+    public boolean vote(String preference){
+        return false; //oki vai
+    }
+
     static public class Option {
         private static int ID_COUNT = 0;
         private int id, votes;
