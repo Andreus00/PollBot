@@ -18,6 +18,7 @@ public class CommandsHandler implements PollHandler {
             return;
 
         String commandName = Character.toUpperCase(content.charAt(0)) + content.substring(1, content.indexOf(' ')).toLowerCase(Locale.ROOT);
+        System.out.println(commandName);
         try {
             ((Command) Class.forName("it.homeworkheroes.pomobot.commands." + commandName).getConstructor(String.class).newInstance(channelId, messageId, content.substring(commandName.length()))).run();
         } catch (ClassNotFoundException e) {
