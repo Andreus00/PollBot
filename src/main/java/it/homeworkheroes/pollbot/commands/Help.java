@@ -6,12 +6,9 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class Help extends PollCommand{
-
-    static String usage = "HHHHHHHH";
-
-    private static String[] commandList = {"Create", "Add", "Remove", "Close", "Help"};
 
     public Help(String channelId, String content) {
         super(channelId, content);
