@@ -69,6 +69,10 @@ public class Poll {
         return true;
     }
 
+    synchronized public void removeOption(int index) {
+        this.optionList.remove(index);
+    }
+
     synchronized public void removeOption(Option o) {
         this.optionList.remove(o);
     }

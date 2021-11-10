@@ -6,4 +6,5 @@ package it.homeworkheroes.pollbot.commands;
 public interface Command {
     void run();
     String getName();
+    String getUsage();
 }

@@ -4,6 +4,8 @@ import it.homeworkheroes.pollbot.commands.Command;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
 
 public class CommandsHandler implements PollHandler {
 
@@ -16,8 +18,10 @@ public class CommandsHandler implements PollHandler {
         if (content.length() < 1)
             return;
         String commandName = "";
+        StringTokenizer tokenizer = new StringTokenizer(content);
         try {
-            commandName = Character.toUpperCase(content.charAt(0)) + content.substring(1, content.indexOf(' ')).toLowerCase(Locale.ROOT);
+            commandName = tokenizer.nextToken();
+            commandName = Character.toUpperCase(commandName.charAt(0)) + commandName.toLowerCase(Locale.ROOT).substring(1);
             ((Command) Class.forName("it.homeworkheroes.pollbot.commands." + commandName).getConstructor(String.class, String.class).newInstance(channelId, content.substring(commandName.length()))).run();
         } catch (ClassNotFoundException e) {
             System.err.println("Command for " + content + " not found. Calculated command name = " + commandName);
@@ -30,7 +34,11 @@ public class CommandsHandler implements PollHandler {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         } catch (IndexOutOfBoundsException e) {
-            System.out.println("Someone tryed to create a poll without a text argument.");
+            System.err.println("Someone tried to create a poll without a text argument.");
+        } catch (NumberFormatException e) {
+            System.err.println("Numeric arguments are incorrect.");
+        } catch (NoSuchElementException e) {
+            System.err.println("Arguments are incorrect.");
         }
     }
 }
