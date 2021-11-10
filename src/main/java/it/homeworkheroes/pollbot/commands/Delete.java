@@ -6,9 +6,9 @@ import it.homeworkheroes.pollbot.classes.Poll;
 
 import java.util.StringTokenizer;
 
-public class Close extends PollCommand{
+public class Delete extends Close{
 
-    public Close(String channelId, String content) {
+    public Delete(String channelId, String content) {
         super(channelId, content);
     }
 
@@ -17,20 +17,12 @@ public class Close extends PollCommand{
         StringTokenizer tokenizer = new StringTokenizer(content);
         String pollId = tokenizer.nextToken();
         Poll p = PollBotAPP.getPollList().getOrDefault(Long.valueOf(pollId), null);
-
-        if (!checkChannel(p)) return;
-        Poll.Option o = p.getOptionList().stream().max(Poll.Option::compareTo).orElse(null);
-
-        if (o != null) { // poll is being closed
-            p.close(EMONUMBER.values()[p.getOptionList().indexOf(o)].getEmoji());
-        }
-        else { // poll is being REMOVED because it hasn't any added option
-            p.close();
-        }
+        p.getOptionList().clear();
+        super.run();
     }
 
     @Override
     public String getName() {
-        return "Close";
+        return "delete";
     }
 }

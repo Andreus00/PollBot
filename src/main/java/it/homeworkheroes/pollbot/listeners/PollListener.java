@@ -56,7 +56,9 @@ public class PollListener extends ListenerAdapter {
             String msg = String.format(Locale.ROOT, "<@%s> you must use a valid reaction", event.getUserId());
             event.getChannel().sendMessage(msg).queue();
             // TODO remove emoji
-            event.getChannel().removeReactionById(event.getMessageId(), event.getReactionEmote().isEmote() ? event.getReactionEmote().getEmote().toString() : event.getReactionEmote().getEmoji()).queue();
+            event.getChannel().removeReactionById(event.getMessageId(), event.getReactionEmote().isEmote() ?
+                    event.getReactionEmote().getEmote().toString() :
+                    event.getReactionEmote().getEmoji()).queue();
         }
     }
 

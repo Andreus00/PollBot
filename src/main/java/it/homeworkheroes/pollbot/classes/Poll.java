@@ -138,6 +138,11 @@ public class Poll {
         PollBotAPP.removePoll(this);
     }
 
+    public void close(){
+        PollBotAPP.removePoll(this);
+        PollBotAPP.getJDA().getTextChannelById(channelId).deleteMessageById(messageId).queue();
+    }
+
 
     synchronized public boolean addVote(String preference){
         try // prova a vedere se la stringa in input è valida per il voto
