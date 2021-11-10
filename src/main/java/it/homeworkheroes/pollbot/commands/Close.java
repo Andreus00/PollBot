@@ -4,7 +4,10 @@ import it.homeworkheroes.pollbot.apps.PollBotAPP;
 import it.homeworkheroes.pollbot.classes.EMONUMBER;
 import it.homeworkheroes.pollbot.classes.Poll;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 
 public class Close extends PollCommand{
 
@@ -21,12 +24,14 @@ public class Close extends PollCommand{
         if (!checkChannel(p)) return;
         Poll.Option o = p.getOptionList().stream().max(Poll.Option::compareTo).orElse(null);
 
-        if (o != null) { // poll is being closed
-            p.close(EMONUMBER.values()[p.getOptionList().indexOf(o)].getEmoji());
-        }
-        else { // poll is being REMOVED because it hasn't any added option
-            p.close();
-        }
+        if(o == null) p.close();
+
+        int max_votes = o.getVotes();
+
+        List<Poll.Option> winners = p.getOptionList().stream().filter(x -> x.getVotes() == max_votes).collect(Collectors.toList());
+
+        p.close(winners.stream().map(x -> EMONUMBER.values()[p.getOptionList().indexOf(x)].getEmoji()).collect(Collectors.toList())); //EMONUMBER.values()[p.getOptionList().indexOf(o)].getEmoji()
+
     }
 
     @Override

@@ -51,8 +51,9 @@ public class PollListener extends ListenerAdapter {
 
     @Override
     public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
-        if(!PollBotAPP.getPollFromMessageId(event.getMessageId())
-                     .addVote(event.getReactionEmote().getName())){
+        Poll p = PollBotAPP.getPollFromMessageId(event.getMessageId());
+        if (p != null && !
+                p.addVote(event.getReactionEmote().getName())) {
             String msg = String.format(Locale.ROOT, "<@%s> you must use a valid reaction", event.getUserId());
             event.getChannel().sendMessage(msg).queue();
             // TODO remove emoji
@@ -64,7 +65,9 @@ public class PollListener extends ListenerAdapter {
 
     @Override
     public void onMessageReactionRemove(@NotNull MessageReactionRemoveEvent event) {
-        PollBotAPP.getPollFromMessageId(event.getMessageId()).removeVote(event.getReactionEmote().getName());
+        Poll p = PollBotAPP.getPollFromMessageId(event.getMessageId());
+        if (p != null)
+            p.removeVote(event.getReactionEmote().getName());
     }
 
 }

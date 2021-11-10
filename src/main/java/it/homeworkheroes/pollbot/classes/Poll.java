@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class Poll {
@@ -128,11 +130,11 @@ public class Poll {
     }
 
 
-    public void close(String winner) {
+    public void close(List<String> winner) {
         TextChannel textChannel = PollBotAPP.getJDA().getTextChannelById(this.channelId);
         MessageEmbed message = buildMessage();
         EmbedBuilder eb = new EmbedBuilder(message);
-        eb.addBlankField(false).addField("VOTATION CLOSED", winner, false);
+        eb.addBlankField(false).addField("VOTATION CLOSED", (winner.size() == 1 ? "Winner: " : "Winners: ") + winner.stream().collect(Collectors.joining(" ")), false);
         textChannel.editMessageById(messageId, eb.build()).queue();
 
         PollBotAPP.removePoll(this);
