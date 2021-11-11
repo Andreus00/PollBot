@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import javax.security.auth.login.LoginException;
 import java.io.*;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 /**
  * main pomobot class
@@ -27,13 +28,17 @@ public class PollBotAPP {
     private static HashMap<String, Long> messageIdPollId;
 
     private static long poll_number;
-    //Strng;
+
+    private Logger logger;
+
+
     /**
      * Private constructor needed to make use of the singleton pattern.
      */
     private PollBotAPP() {
         pollList = new HashMap<>();
         messageIdPollId = new HashMap<>();
+        logger = Logger.getLogger("it.homeworkheroes.pollbot.log");
     }
 
     public static synchronized long getNewId() {
@@ -58,8 +63,12 @@ public class PollBotAPP {
         return pollList;
     }
 
+    public Logger getLogger() {
+        return logger;
+    }
+
     /**
-     * Method which initializes a TBA instance by following the singleton pattern.
+     * Method which initializes a PBA instance by following the singleton pattern.
      * It saves the created instance into a field, and then returns it.
      * @return The created or pre-existing instance of tba.
      */

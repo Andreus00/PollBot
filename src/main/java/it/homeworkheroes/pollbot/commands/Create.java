@@ -16,6 +16,8 @@ public class Create extends PollCommand {
         PollBotAPP.addPoll(p);
 
         p.send();
+
+        PollBotAPP.getPba().getLogger().info("Poll created in channel " + p.getChannelId() + ". Poll ID: " + p.getId() + " poll message id: " + p.getMessageId());
     }
 
     @Override
