@@ -82,8 +82,8 @@ public class PollBotAPP {
         catch(IOException e) {
             e.printStackTrace();
         }
-        JDABuilder builder = JDABuilder.createDefault(token);  // TODO: token
-        builder.setActivity(Activity.watching("Poll Poll Poll"));
+        JDABuilder builder = JDABuilder.createDefault(token);
+        builder.setActivity(Activity.competing("Poll Poll Poll"));
         builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
         builder.addEventListeners(new PollListener());
         builder.build();
