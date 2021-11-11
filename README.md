@@ -1,4 +1,6 @@
 # PollBot
+<center><p align="center"><img src="https://user-images.githubusercontent.com/62235503/141264522-91960f80-ea8f-4ef4-b56a-2a4e3611c91d.png" width="300"></img> <br><hr></p></center>
+
 A Discord bot that handles polls for you.<br>
 It is written in java with JDA.<br>
 <hr>
@@ -11,9 +13,9 @@ It is written in java with JDA.<br>
       <h3>
     </div>
     <div>
-      <label>
+      <p>
         The classic help that shows all the available commands and shows their usage
-      </label>
+      </p>
     </div>
   </div>
   
@@ -24,9 +26,9 @@ It is written in java with JDA.<br>
       <h3>
     </div>
     <div>
-      <label>
+      <p>
         This command creates a poll and sends it in the same channel where the command was written.
-      </label>
+      </p>
     </div>
   </div>
       
@@ -38,9 +40,9 @@ It is written in java with JDA.<br>
       <h3>
     </div>
     <div>
-      <label>
+      <p>
         This command is used to add an option to a poll
-      </label>
+      </p>
     </div>
   </div>
       
@@ -52,9 +54,9 @@ It is written in java with JDA.<br>
       <h3>
     </div>
     <div>
-      <label>
+      <p>
         This command removes an option from a poll
-      </label>
+      </p>
     </div>
   </div>
       
@@ -66,9 +68,9 @@ It is written in java with JDA.<br>
       <h3>
     </div>
     <div>
-      <label>
+      <p>
         Closes a poll and shows who won.
-      </label>
+      </p>
     </div>
   </div>
       
@@ -79,11 +81,11 @@ It is written in java with JDA.<br>
       <h3>
     </div>
     <div>
-      <label>
+      <p>
         Deletes a poll (only if it is still opened)
-      </label>
+      </p>
     </div>
   </div>
 </ul>
-
-     
+<br><hr>
+<img src="https://user-images.githubusercontent.com/62235503/141264704-0aaa7f4f-ab4b-4422-be1d-fd424b62ddc8.png" width="500"></img>
