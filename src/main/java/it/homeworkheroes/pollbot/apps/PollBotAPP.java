@@ -10,12 +10,17 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import javax.security.auth.login.LoginException;
 import java.io.*;
 import java.util.HashMap;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 /**
  * main pomobot class
  */
 public class PollBotAPP {
+
+    private static String[] args = null;
 
     private static PollBotAPP pba;
 
@@ -38,7 +43,26 @@ public class PollBotAPP {
     private PollBotAPP() {
         pollList = new HashMap<>();
         messageIdPollId = new HashMap<>();
-        logger = Logger.getLogger("it.homeworkheroes.pollbot.log");
+        for(int i = 0; i < args.length; i++) {
+            if(args[i].equals("--file")){
+                logger = Logger.getLogger("it.homeworkheroes.pollbot.log");
+                try {
+                    FileHandler fileHandler = new FileHandler("log/pollog.txt", true);
+
+                    fileHandler.setFormatter(new SimpleFormatter());
+                    logger.addHandler(fileHandler);
+                    logger.log(Level.INFO, "-------------------------------------------------------------------------------------\nStarting...\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if(logger == null)
+            logger = Logger.getLogger("it.homeworkheroes.pollbot.log");
+    }
+
+    public static void setArgs(String[] args) {
+        PollBotAPP.args = args;
     }
 
     public static synchronized long getNewId() {
