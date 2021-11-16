@@ -6,6 +6,9 @@ import it.homeworkheroes.pollbot.classes.Poll;
 
 import java.util.StringTokenizer;
 
+/**
+ * Delete the poll
+ */
 public class Delete extends Close{
 
     public Delete(String channelId, String content) {

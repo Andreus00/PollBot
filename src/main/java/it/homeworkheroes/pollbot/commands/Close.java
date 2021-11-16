@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
+/**
+ * Close the poll and show results
+ */
 public class Close extends PollCommand{
 
     public Close(String channelId, String content) {

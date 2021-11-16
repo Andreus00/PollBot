@@ -3,6 +3,9 @@ package it.homeworkheroes.pollbot.commands;
 import it.homeworkheroes.pollbot.apps.PollBotAPP;
 import it.homeworkheroes.pollbot.classes.Poll;
 
+/**
+ * Create an empty poll
+ */
 public class Create extends PollCommand {
 
     public Create(String channelId, String content) {

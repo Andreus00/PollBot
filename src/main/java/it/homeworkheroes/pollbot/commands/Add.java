@@ -6,6 +6,9 @@ import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.util.StringTokenizer;
 
+/**
+ * Add an {@link it.homeworkheroes.pollbot.classes.Poll.Option} on the {@link Poll}
+ */
 public class Add extends PollCommand {
 
     public Add(String channelId, String content) {

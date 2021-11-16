@@ -5,6 +5,9 @@ import it.homeworkheroes.pollbot.classes.Poll;
 
 import java.util.StringTokenizer;
 
+/**
+ * Remove the {@link it.homeworkheroes.pollbot.classes.Poll.Option} from poll from the server
+ */
 public class Remove extends PollCommand{
     public Remove(String channelId, String content) {
         super(channelId, content);

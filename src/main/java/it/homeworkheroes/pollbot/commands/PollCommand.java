@@ -2,6 +2,9 @@ package it.homeworkheroes.pollbot.commands;
 
 import it.homeworkheroes.pollbot.classes.Poll;
 
+/**
+ * Generic Poll command
+ */
 public abstract class PollCommand implements Command {
     protected String channelId, content;
     PollCommand(String channelId, String content) {

@@ -27,6 +27,10 @@ public class PollListener extends ListenerAdapter {
         PollBotAPP.getPba().getLogger().info("Bot is ready");
     }
 
+    /**
+     * Parse message and call the {@link CommandsHandler}
+     * @param event
+     */
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         String content = event.getMessage().getContentDisplay();
@@ -42,6 +46,10 @@ public class PollListener extends ListenerAdapter {
         }
     }
 
+    /**
+     * Increment vote counter on right emoji append, else notify on the channel that user has put wrong emoji
+     * @param event
+     */
     @Override
     public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
         Poll p = PollBotAPP.getPollFromMessageId(event.getMessageId());
@@ -61,6 +69,7 @@ public class PollListener extends ListenerAdapter {
         }
     }
 
+    /**Decrement vote counter*/
     @Override
     public void onMessageReactionRemove(@NotNull MessageReactionRemoveEvent event) {
         Poll p = PollBotAPP.getPollFromMessageId(event.getMessageId());

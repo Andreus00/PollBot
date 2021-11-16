@@ -19,6 +19,7 @@ public class Help extends PollCommand{
         EmbedBuilder helpMsg = new EmbedBuilder();
         helpMsg.setColor(Color.RED);
         helpMsg .setTitle("**POLL HELP**")
+                .addField("USAGE", "Append number emoticon for voting", false)
                 .addField("Create", "Usage: !poll create <text of the poll>", false)
                 .addField("Add", "Usage: !poll add <poll id> <option text>", false)
                 .addField("Remove", "Usage: !poll remove <poll id> <option index>", false)

@@ -11,12 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 public class Poll {
     private String text, channelId, messageId;
+    /**Unique ID for poll, there is a 1:1 association from existing polls and ID*/
     private long pollId;
+    /**List of {@link Option} */
     private ArrayList<Option> optionList;
-    private boolean closed;
+    // private boolean closed;
     private long votes_sum;
 
     private final static Character PROGRESS_BAR_FULL = '▰';
@@ -192,6 +193,9 @@ public class Poll {
         return (int) (pollId ^ (pollId >>> 32));
     }
 
+    /**
+     * Option that can be added to {@link Poll}
+     * */
     static public class Option implements Comparable{
 
         private static int ID_COUNT = 0;

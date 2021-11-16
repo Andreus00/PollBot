@@ -3,7 +3,7 @@ package it.homeworkheroes.pollbot.classes;
 import java.util.Locale;
 
 /**
- * Enum that maps a number to the associated emoticons.
+ * Enum of emoticons.
  */
 public enum EMONUMBER {
     ZERO(/*0,*/ "0️⃣"), ONE(/*1,*/ "1️⃣"), TWO(/*2,*/ "2️⃣"), THREE(/*3,*/"3️⃣"), FOUR(/*4,*/ "4️⃣"),
