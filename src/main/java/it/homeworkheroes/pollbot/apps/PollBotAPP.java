@@ -21,6 +21,7 @@ import java.util.logging.SimpleFormatter;
 public class PollBotAPP {
 
     private static String[] args = null;
+    public static final String BOT_ID = "907313997005586514";
 
     private static PollBotAPP pba;
 

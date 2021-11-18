@@ -1,6 +1,7 @@
 package it.homeworkheroes.pollbot.commands;
 
 import it.homeworkheroes.pollbot.apps.PollBotAPP;
+import it.homeworkheroes.pollbot.classes.EMONUMBER;
 import it.homeworkheroes.pollbot.classes.Poll;
 import net.dv8tion.jda.api.EmbedBuilder;
 
@@ -26,7 +27,11 @@ public class Add extends PollCommand {
         if(!p.addOption(new Poll.Option(content.substring(pollId.length() + 1)))) {
             PollBotAPP.getJDA().getTextChannelById(channelId).sendMessage(new EmbedBuilder().addField("Warning", "Numero massimo di entry raggiunto", true).build()).queue();
         }
-        p.update();
+        else{
+            String emoji = EMONUMBER.values()[p.getOptionList().size() - 1].getEmoji();
+            PollBotAPP.getJDA().getTextChannelById(channelId).addReactionById(p.getMessageId(), emoji).queue();
+            p.update();
+        }
     }
 
     @Override

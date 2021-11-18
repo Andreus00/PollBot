@@ -53,11 +53,12 @@ public class PollListener extends ListenerAdapter {
     @Override
     public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
         Poll p = PollBotAPP.getPollFromMessageId(event.getMessageId());
-        if (p != null && !
-                p.addVote(event.getReactionEmote().getName())) {
+        if (p != null
+            && !isPollBot(event.getUserId())
+            && !p.addVote(event.getReactionEmote().getName())) {
+
             String msg = String.format(Locale.ROOT, "<@%s> you must use a valid reaction", event.getUserId());
             event.getChannel().sendMessage(msg).queue();
-            // TODO remove emoji
             event.getChannel().removeReactionById(event.getMessageId(), event.getReactionEmote().isEmote() ?
                     event.getReactionEmote().getEmote().toString() :
                     event.getReactionEmote().getEmoji()).queue();
@@ -73,10 +74,14 @@ public class PollListener extends ListenerAdapter {
     @Override
     public void onMessageReactionRemove(@NotNull MessageReactionRemoveEvent event) {
         Poll p = PollBotAPP.getPollFromMessageId(event.getMessageId());
-        if (p != null){
+        if (p != null && !isPollBot(event.getUserId())){
             p.removeVote(event.getReactionEmote().getName());
             PollBotAPP.getPba().getLogger().info("Emoji removed in " + event.getTextChannel().getName() + "(" + event.getTextChannel().getId() + ") by " + event.getUser().getName() + "(" + event.getUserId() + ") in poll " + event.getMessageId() + "\n");
         }
+    }
+
+    public boolean isPollBot(String subjectActionId){
+        return subjectActionId.equals(PollBotAPP.BOT_ID);
     }
 
 }

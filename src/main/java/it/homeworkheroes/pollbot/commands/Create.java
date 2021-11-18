@@ -1,6 +1,7 @@
 package it.homeworkheroes.pollbot.commands;
 
 import it.homeworkheroes.pollbot.apps.PollBotAPP;
+import it.homeworkheroes.pollbot.classes.EMONUMBER;
 import it.homeworkheroes.pollbot.classes.Poll;
 
 /**
@@ -19,7 +20,6 @@ public class Create extends PollCommand {
         PollBotAPP.addPoll(p);
 
         p.send();
-
         PollBotAPP.getPba().getLogger().info("Poll created in channel " + p.getChannelId() + ". Poll ID: " + p.getId() + " poll message id: " + p.getMessageId());
     }
 

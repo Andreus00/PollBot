@@ -65,6 +65,11 @@ public class Poll {
         this.optionList = optionList;
     }
 
+    /**
+     * Aggiunge una {@link Option} a {@link Poll#optionList} se < di {@link PollBotAPP#MAX_ENTRY}
+     * @param o Option
+     * @return true se l'opzione è aggiunta correttamente
+     */
     synchronized public boolean addOption(Option o) {
         if(optionList.size() >= PollBotAPP.MAX_ENTRY)
             return false;
@@ -116,12 +121,10 @@ public class Poll {
         TextChannel textChannel = PollBotAPP.getJDA().getTextChannelById(this.channelId);
 
         MessageEmbed m = buildMessage();
-
         textChannel.sendMessage(m).queue(e -> {
             messageId = e.getId();
             PollBotAPP.addMessageIdPollId(getMessageId(), getId());
         });
-
     }
 
     public void update() {
