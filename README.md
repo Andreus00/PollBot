@@ -1,8 +1,7 @@
-# PollBot
-<center><p align="center"><img src="https://user-images.githubusercontent.com/62235503/142996349-caf77a52-a22f-4c75-84de-4c6da765b8c0.png" width="300"></img> <br><hr></p></center>
+<center><p align="center"><img src="https://user-images.githubusercontent.com/62235503/142996349-caf77a52-a22f-4c75-84de-4c6da765b8c0.png" width="300"></img><br>
+<br><hr><h1>Poll Bot</h1></p></center>
 
-A Discord bot that handles polls for you.<br>
-It is written in java with JDA.<br>
+<p>A Discord bot written in java with JDA, that handles polls for you.</p>
 <hr>
 <h2>Commands</h2>
 <ul>
