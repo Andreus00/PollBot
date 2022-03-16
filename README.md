@@ -92,3 +92,4 @@
       <h1>How to run</h1><br>
       <p>In order to run the app you have to create a folder called "token" and create a file inside called "token" too.<br>
         The app will look for the Discrod Bot token in that file.</p>
+      <p>Then run [java -jar <PollBot.jar>] and enjoy your polls! </p>
