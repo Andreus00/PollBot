@@ -87,4 +87,8 @@
   </div>
 </ul>
 <br><hr>
-<img src="https://user-images.githubusercontent.com/62235503/141264704-0aaa7f4f-ab4b-4422-be1d-fd424b62ddc8.png" width="500"></img>
+<img src="https://user-images.githubusercontent.com/62235503/141264704-0aaa7f4f-ab4b-4422-be1d-fd424b62ddc8.png" width="500"></img><br>
+      <hr>
+      <h1>How to run</h1><br>
+      <p>In order to run the app you have to create a folder called "token" and create a file inside called "token" too.<br>
+        The app will look for the Discrod Bot token in that file.</p>
